@@ -33,6 +33,7 @@ const CarouselSlider = () => {
                         className="d-block w-100"
                         src={dataImage.url}
                         alt="First slide"
+                        style={{ width: "1000px", height: "600px" }}
                     />
                     <Carousel.Caption>
                         <h3>aaaaaaa</h3>

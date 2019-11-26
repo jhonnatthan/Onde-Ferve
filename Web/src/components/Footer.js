@@ -5,7 +5,7 @@ const Footer = () => {
         <footer>
             <div class="footer-copyright text-center py-3">
                 © 2019 Copyright:
-                <a href="https://google.com.br"> Workless</a>
+                <a href="https://google.com.br"> Onde ferve</a>
             </div>
         </footer>
     );

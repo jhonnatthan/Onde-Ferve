@@ -3,8 +3,8 @@ import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
 
 const Header = () => {
     return (
-        <Navbar bg="light" expand="lg">
-            <Navbar.Brand href="#home">Workless</Navbar.Brand>
+        <Navbar bg="light fixed-top" expand="lg">
+            <Navbar.Brand href="#home">Onde ferve</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
