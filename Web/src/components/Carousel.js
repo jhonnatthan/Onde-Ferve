@@ -36,7 +36,7 @@ const CarouselSlider = () => {
                         style={{ width: "1000px", height: "600px" }}
                     />
                     <Carousel.Caption>
-                        <h3>aaaaaaa</h3>
+                        {dataImage.title && <h3>{dataImage.title}</h3>}
                         <p>{dataImage.description}</p>
                     </Carousel.Caption>
                 </Carousel.Item>

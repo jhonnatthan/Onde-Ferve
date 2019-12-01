@@ -1,31 +1,51 @@
-import React from 'react';
+import React from "react";
 
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,
+} from "react-router-dom";
 
-import LandingPage from './pages/LandingPage';
-import MapPage from './pages/MapPage';
-import NotFoundPage from './pages/NotFoundPage';
+import LandingPage from "./pages/LandingPage";
+import MapPage from "./pages/MapPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import Auth from "./pages/Auth";
 
 const Routes = props => {
     const UnprotectedRoute = ({ component: Component, auth, ...rest }) => {
         const { authenticated } = props;
 
         return (
-            <Route {...rest} render={(props) => (
-                !authenticated ? <Component {...props} /> : <Redirect to='/mapa' />
-            )} />
-        )
-    }
+            <Route
+                {...rest}
+                render={props =>
+                    !authenticated ? (
+                        <Component {...props} />
+                    ) : (
+                        <Redirect to="/mapa" />
+                    )
+                }
+            />
+        );
+    };
 
     const ProtectedRoute = ({ component: Component, auth, ...rest }) => {
         const { authenticated } = props;
 
         return (
-            <Route {...rest} render={(props) => (
-                authenticated ? <Component {...props} /> : <Redirect to='/' />
-            )} />
-        )
-    }
+            <Route
+                {...rest}
+                render={props =>
+                    authenticated ? (
+                        <Component {...props} />
+                    ) : (
+                        <Redirect to="/" />
+                    )
+                }
+            />
+        );
+    };
 
     return (
         <Router>
@@ -36,7 +56,6 @@ const Routes = props => {
             </Switch>
         </Router>
     );
-
-}
+};
 
 export default Routes;
