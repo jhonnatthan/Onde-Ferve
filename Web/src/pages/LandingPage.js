@@ -1,7 +1,17 @@
-import React from 'react';
+import React from "react";
+import Header from "../components/Header";
+import CarouselSlider from "../components/Carousel";
+import Footer from "../components/Footer";
+import InformationArea from "../components/InformationArea";
 
-export default function LandingPage() {
+const LandingPage = () => {
     return (
-        <h1>Landing</h1>
+        <>
+            <Header />
+            <CarouselSlider />
+            <InformationArea />
+            <Footer />
+        </>
     );
-}
+};
+export default LandingPage;
