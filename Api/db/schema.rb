@@ -27,8 +27,8 @@ ActiveRecord::Schema.define(version: 2019_12_02_030606) do
     t.string "description"
     t.datetime "date"
     t.string "banner"
-    t.string "lat"
-    t.string "lng"
+    t.float "lat"
+    t.float "lng"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

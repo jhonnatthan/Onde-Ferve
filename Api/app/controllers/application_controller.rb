@@ -1,6 +1,10 @@
 class ApplicationController < ActionController::API
+  def welcome
+    render json: { data: nil, message: 'Bem vindo a API do Onde Ferve', error: false }
+  end
+
   def not_found
-    render json: { error: "not_found" }
+    render json: { data: nil, messsage: 'Rota não encontrada', error: true }
   end
 
   def authorize_request
