@@ -4,12 +4,13 @@ class EventsController < ApplicationController
 
     # GET /events
     def index
-        # @events = Event.all
-        @events = Event.joins(:confirmation)
+        @events = Event.all();
 
-        @events.each do |event|
-            @confirmations = Confirmation.where(event_id: event.id);
-            event.confirmations = @confirmations
+        @events = @events.map do |event_record|
+            event_record.as_json.tap do |event|
+                @confirmations = Confirmation.select('users.id, users.name').joins(:user).where(event_id: event_record.id);
+                event[:confirmations] = @confirmations;
+            end
         end
 
         render json: { data: @events, message: 'Eventos listados com sucesso', error: false }
@@ -50,7 +51,11 @@ class EventsController < ApplicationController
 
     def find_event
         @event = Event.left_outer_joins(:confirmation).where('events.id', '=', params[:id]).first
-        # @event = Event.find_by_id!(params[:id])
+
+        @event = @event.as_json.tap do |event|
+            @confirmations = Confirmation.select('users.id, users.name').joins(:user).where(event_id: @event.id);
+            event[:confirmations] = @confirmations;
+        end
     rescue ActiveRecord::RecordNotFound
         render json: { data: nil, message: "Evento não encontrado", error: true }
     end

@@ -1,4 +1,5 @@
 class Event < ApplicationRecord
+  #   attr_accessor :confirmations
   validates :name, presence: true
   validates :location, presence: true
   validates :description, presence: true
