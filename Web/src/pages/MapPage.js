@@ -7,7 +7,8 @@ import MapContainer from "../components/MapContainer";
 
 const styles = {
   mapContainer: {
-    maxHeight: "100vh"
+    maxHeight: "100vh",
+    minHeight: "100vh"
   },
   textEvent: {
     color: "#E86B52"
@@ -51,8 +52,13 @@ const styles = {
     fontSize: ".9rem",
     maxWidth: "135px"
   },
+  rightContainer: {
+    maxHeight: "100vh"
+  },
   barContainer: {
-    overflow: "scroll"
+    flex: 1,
+    overflow: "scroll",
+    maxHeight: "80%"
   }
 };
 
@@ -62,74 +68,72 @@ const MapPage = () => {
 
   return (
     <main className="container-fluid">
-      <div className="row">
+      <div className="row" style={styles.mapContainer}>
         <div className="col-12 col-sm-9 border justify-content-center align-items-start d-flex map-container">
           <MapContainer />
           {/* APARECER VIA MODAL/ANIMAÇÃO */}
           {showModal && <ModalEvent />}
         </div>
-        <div className="col-12 col-sm-3 p-0" style={styles.barContainer}>
-          <div className="px-3">
-            <div className="d-flex flex-column py-2">
-              <h3 className="text-center" style={styles.textEvent}>
-                Eventos
-              </h3>
+        <div
+          className="col-12 col-sm-3 justify-content-between d-flex flex-column"
+          style={styles.rightContainer}
+        >
+          <div className="d-flex flex-column py-2 px-3">
+            <h3 className="text-center" style={styles.textEvent}>
+              Eventos
+            </h3>
 
-              <div
-                className="btn-group"
-                role="group"
-                aria-label="Basic example"
+            <div className="btn-group" role="group" aria-label="Basic example">
+              <button
+                type="button"
+                className="btn p-1"
+                style={(styles.btnGroupStyle, styles.btnGroupStyleActive)}
               >
-                <button
-                  type="button"
-                  className="btn p-1"
-                  style={(styles.btnGroupStyle, styles.btnGroupStyleActive)}
-                >
-                  Próximos
-                </button>
-                <button
-                  type="button"
-                  className="btn p-1"
-                  style={styles.btnGroupStyle}
-                >
-                  Populares
-                </button>
-                <button
-                  type="button"
-                  className="btn p-1"
-                  style={styles.btnGroupStyle}
-                >
-                  Todos
-                </button>
-              </div>
-            </div>
-            <div className="d-flex my-2 flex-column">
-              <h4 style={styles.textLabel}>Hoje</h4>
-              <div className="d-flex flex-column mb-2">
-                <CardEvent />
-                <CardEvent />
-                <CardEvent />
-              </div>
-              <h4 style={styles.textLabel}>Esta semana</h4>
-              <div className="d-flex flex-column mb-2">
-                <CardEvent />
-                <CardEvent />
-              </div>
-              <h4 style={styles.textLabel}>Este mês</h4>
-              <div className="d-flex flex-column">
-                {data.length > 0 ? (
-                  <CardEvent />
-                ) : (
-                  <p
-                    className="text-left font-weight-bold"
-                    style={styles.textError}
-                  >
-                    Não encontramos eventos com este filtro :(
-                  </p>
-                )}
-              </div>
+                Próximos
+              </button>
+              <button
+                type="button"
+                className="btn p-1"
+                style={styles.btnGroupStyle}
+              >
+                Populares
+              </button>
+              <button
+                type="button"
+                className="btn p-1"
+                style={styles.btnGroupStyle}
+              >
+                Todos
+              </button>
             </div>
           </div>
+          <div className="d-flex my-2 flex-column" style={styles.barContainer}>
+            <h4 style={styles.textLabel}>Hoje</h4>
+            <div className="d-flex flex-column mb-2">
+              <CardEvent />
+              <CardEvent />
+              <CardEvent />
+            </div>
+            <h4 style={styles.textLabel}>Esta semana</h4>
+            <div className="d-flex flex-column mb-2">
+              <CardEvent />
+              <CardEvent />
+            </div>
+            <h4 style={styles.textLabel}>Este mês</h4>
+            <div className="d-flex flex-column">
+              {data.length > 0 ? (
+                <CardEvent />
+              ) : (
+                <p
+                  className="text-left font-weight-bold"
+                  style={styles.textError}
+                >
+                  Não encontramos eventos com este filtro :(
+                </p>
+              )}
+            </div>
+          </div>
+
           {/* Footer button*/}
           <div
             className="px-4 py-2 d-flex align-items-center justify-content-center"
