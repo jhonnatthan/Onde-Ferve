@@ -1,6 +1,7 @@
 import React from "react";
 
 import CardEvent from "../components/CardEvent";
+import ModalEvent from "../components/ModalEvent";
 import profile1 from "../assets/images/profile1.jpg";
 
 const textEvent = {
@@ -51,7 +52,10 @@ const MapPage = () => {
     return (
         <main className="border container-fluid">
             <div className="row">
-                <div className="col-12 col-sm-9 border"></div>
+                <div className="col-12 col-sm-9 border">
+                    {/* APARECER VIA MODAL/ANIMAÇÃO */}
+                    <ModalEvent />
+                </div>
                 <div className="col-12 col-sm-3 p-0">
                     <div className="px-3">
                         <div className="d-flex flex-column py-2">

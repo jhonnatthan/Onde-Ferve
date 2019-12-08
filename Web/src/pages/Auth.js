@@ -7,7 +7,7 @@ const mainForm = {
     background: "#000",
 };
 
-const mystyle = {
+const containerBG = {
     background: `transparent url(${imageFesta}) 0% 0% no-repeat padding-box`,
     backgroundSize: "cover",
     minHeight: "100vh",
@@ -45,7 +45,7 @@ const Auth = () => {
         <main style={mainForm}>
             <div
                 className="d-flex justify-content-center align-items-center"
-                style={mystyle}
+                style={containerBG}
             >
                 <div>
                     <div style={containerCard}>
