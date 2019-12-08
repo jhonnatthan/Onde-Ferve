@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   BrowserRouter as Router,
@@ -13,8 +13,18 @@ import NotFoundPage from "./pages/NotFoundPage";
 import Auth from "./pages/Auth";
 
 import storage from "./services/storage";
+import api from "./services/api";
 
 const Routes = props => {
+  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const token = storage.getToken();
+    if (token) api.defaults.headers.Authorization = token;
+    setLoading(false);
+  }, []);
+
   const UnprotectedRoute = ({ component: Component, ...rest }) => {
     const token = storage.getToken();
 
@@ -41,7 +51,11 @@ const Routes = props => {
     );
   };
 
-  return (
+  return loading ? (
+    <div className="d-flex flex-1 justify-content-center align-items-center min-vh-100">
+      <p className="h4">Carregando aplicação..</p>
+    </div>
+  ) : (
     <Router>
       <Switch>
         <UnprotectedRoute exact path="/" component={Auth} />

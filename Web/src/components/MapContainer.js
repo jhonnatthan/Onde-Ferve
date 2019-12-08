@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
 
 const styles = {
@@ -13,6 +13,10 @@ export const MapContainer = props => {
   const [markers, setMarkers] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const getEvents = () => {
+    // setMarkers([...markers, obj]);
+  };
+
   const getLocation = () => {
     navigator.geolocation.getCurrentPosition(
       pos => {
@@ -22,7 +26,6 @@ export const MapContainer = props => {
 
         const obj = { lat: latitude, lng: longitude, name: "Sua posição" };
         setPosition(obj);
-        setMarkers([...markers, obj]);
         setLoading(false);
       },
       () => {
@@ -31,15 +34,9 @@ export const MapContainer = props => {
     );
   };
 
-  const getMarkers = () => {
-    if (props.markers) {
-      setMarkers(props.markers);
-    }
-  };
-
   useEffect(() => {
     getLocation();
-    getMarkers();
+    getEvents();
   }, []);
 
   const markerClick = marker => {

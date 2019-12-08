@@ -5,6 +5,7 @@ import ModalEvent from "../components/ModalEvent";
 import profile1 from "../assets/images/profile1.jpg";
 import MapContainer from "../components/MapContainer";
 import storage from "../services/storage";
+import api from "../services/api";
 
 const styles = {
   mapContainer: {
@@ -50,8 +51,7 @@ const styles = {
 
   footerSideMenuName: {
     color: "#F2F1F1",
-    fontSize: ".9rem",
-    maxWidth: "135px"
+    fontSize: ".9rem"
   },
   rightContainer: {
     maxHeight: "100vh"
@@ -63,21 +63,49 @@ const styles = {
 };
 
 const MapPage = ({ history: { push } }) => {
+  const [user, setUser] = useState(null);
+  const [events, setEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const data = [];
 
   const logout = () => {
     storage.clear();
     push("/");
   };
 
+  const getEvents = async () => {
+    try {
+      const response = await api.get("/events");
+      const { data } = response;
+
+      if (!data.error) {
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const getUser = () => {
+    const _user = storage.getUser();
+    setUser(_user);
+  };
+
+  useEffect(() => {
+    getUser();
+    getEvents();
+  }, []);
+
   return (
     <main className="container-fluid">
       <div className="row" style={styles.mapContainer}>
         <div className="col-12 col-sm-9 border justify-content-center align-items-start d-flex map-container">
-          <MapContainer markerClick={event => setShowModal(true)} />
+          <MapContainer
+            markerClick={event => setShowModal(true)}
+            events={events}
+          />
           {/* APARECER VIA MODAL/ANIMAÇÃO */}
-          {showModal && <ModalEvent />}
+          {showModal && <ModalEvent onClose={() => setShowModal(false)} />}
         </div>
         <div
           className="col-12 col-sm-3 justify-content-between d-flex flex-column"
@@ -107,13 +135,13 @@ const MapPage = ({ history: { push } }) => {
             />
             <p
               style={styles.footerSideMenuName}
-              className="m-0 font-weight-bold"
+              className="m-0 font-weight-bold d-flex flex-fill text-truncate"
             >
-              Nome do usuário
+              {user && user.name}
             </p>
             <i
               onClick={logout}
-              className="fa fa-sign-out text-white d-flex ml-auto"
+              className="fa fa-sign-out text-white d-flex ml-auto h5 m-0"
               aria-hidden="true"
             ></i>
           </div>
