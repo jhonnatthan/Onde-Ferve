@@ -58,7 +58,7 @@ const styles = {
 };
 
 const ModalEvent = () => (
-  <div className="shadow mt-3 " style={styles.modalContainer}>
+  <div className="shadow mt-5 " style={styles.modalContainer}>
     <div style={styles.headerAreaContainer}>
       <div style={styles.headerArea}>
         <button className="btn" style={styles.headerBtn}>

@@ -3,6 +3,7 @@ import React from "react";
 import CardEvent from "../components/CardEvent";
 import ModalEvent from "../components/ModalEvent";
 import profile1 from "../assets/images/profile1.jpg";
+import { MapContainer } from "../components/MapContainer";
 
 const styles = {
   mapContainer: {
@@ -47,7 +48,7 @@ const styles = {
 
   footerSideMenuName: {
     color: "#F2F1F1",
-    fontSize: "13px",
+    fontSize: ".9rem",
     maxWidth: "135px"
   },
   barContainer: {
@@ -62,6 +63,7 @@ const MapPage = () => {
     <main className="container-fluid">
       <div className="row">
         <div className="col-12 col-sm-9 border justify-content-center align-items-start d-flex">
+          <MapContainer />
           {/* APARECER VIA MODAL/ANIMAÇÃO */}
           <ModalEvent />
         </div>
