@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import CardEvent from "../components/CardEvent";
 import ModalEvent from "../components/ModalEvent";
@@ -57,6 +57,7 @@ const styles = {
 };
 
 const MapPage = () => {
+  const [showModal, setShowModal] = useState(false);
   const data = [];
 
   return (
@@ -65,7 +66,7 @@ const MapPage = () => {
         <div className="col-12 col-sm-9 border justify-content-center align-items-start d-flex">
           <MapContainer />
           {/* APARECER VIA MODAL/ANIMAÇÃO */}
-          <ModalEvent />
+          {showModal && <ModalEvent />}
         </div>
         <div className="col-12 col-sm-3 p-0" style={styles.barContainer}>
           <div className="px-3">

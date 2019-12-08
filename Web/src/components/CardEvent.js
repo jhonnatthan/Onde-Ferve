@@ -47,11 +47,16 @@ const styles = {
   }
 };
 
-const CardEvent = () => {
+const CardEvent = props => {
+  const handleEvent = () => {
+    if (props.onClick) props.onClick();
+  };
+
   return (
     <div
       style={styles.cardEvent}
       className="d-flex justify-content-between p-2 my-2"
+      onClick={handleEvent}
     >
       <div className="d-flex flex-column flex-fill">
         <p style={styles.textData} className="m-0">
