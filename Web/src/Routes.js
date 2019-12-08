@@ -50,8 +50,8 @@ const Routes = props => {
     return (
         <Router>
             <Switch>
-                <UnprotectedRoute exact path="/" component={MapPage} />
-                <ProtectedRoute path="/map" component={MapPage} />
+                <UnprotectedRoute exact path="/" component={Auth} />
+                <UnprotectedRoute path="/map" component={MapPage} />
                 <Route component={NotFoundPage} />
             </Switch>
         </Router>

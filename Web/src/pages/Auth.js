@@ -1,91 +1,105 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState } from "react";
 import imageFesta from "../assets/images/festa/festa1.png";
+import api from "../services/api";
 
-import Api from "../services/api";
+const styles = {
+    mainForm: {
+        background: "#000",
+    },
 
-const mainForm = {
-    background: "#000",
+    containerBG: {
+        background: `transparent url(${imageFesta}) 0% 0% no-repeat padding-box`,
+        backgroundSize: "cover",
+        minHeight: "100vh",
+        // opacity: 0.61,
+    },
+    containerCard: {
+        maxWidth: "495px",
+    },
+    formStyle: {
+        background: "#EEEEEE",
+        borderRadius: "8px",
+    },
+    textForm: {
+        color: "#E86B52",
+    },
+    btnLogin: {
+        background: "#E86B52",
+    },
 };
 
-const mystyle = {
-    background: `transparent url(${imageFesta}) 0% 0% no-repeat padding-box`,
-    backgroundSize: "cover",
-    minHeight: "100vh",
-    // opacity: 0.61,
-};
-const containerCard = {
-    width: "495px",
-    height: "307px",
-};
-const formStyle = {
-    background: "#EEEEEE",
-    borderRadius: "8px",
-};
-const textForm = { color: "#E86B52" };
-const btnLogin = { background: "#E86B52" };
-
-const Auth = () => {
+const Auth = ({ history: { push } }) => {
     const [emailInput, setEmailInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
 
-    // useEffect(async () => {
-    //     const response = await Api.get("/users/guyi02/repos");
-    //     console.log(response);
-    // });
-
-    const handleLogin = e => {
+    const handleLogin = async e => {
         e.preventDefault();
         if (emailInput === "" || passwordInput === "") {
             alert("existem campos vazios");
         }
-        alert("passou");
+        try {
+            const response = await api.post("/auth/login", {
+                email: emailInput,
+                password: passwordInput,
+            });
+            const { data } = response;
+
+            if (!data.error) {
+                push("/map");
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            alert(error);
+        }
     };
 
     return (
-        <main style={mainForm}>
+        <main style={styles.mainForm}>
             <div
                 className="d-flex justify-content-center align-items-center"
-                style={mystyle}
+                style={styles.containerBG}
             >
-                <div>
-                    <div style={containerCard}>
-                        <form
-                            className="form-signin p-4"
-                            style={formStyle}
-                            onSubmit={event => handleLogin(event)}
+                <div
+                    className="card m-4 m-sm-0 w-100"
+                    style={styles.containerCard}
+                >
+                    <form
+                        className="form-signin p-4 card-header"
+                        style={styles.formStyle}
+                        onSubmit={event => handleLogin(event)}
+                    >
+                        <h1
+                            className="h3 mb-3 text-center font-weight-bold"
+                            style={styles.textForm}
                         >
-                            <h1
-                                className="h3 mb-3 text-center font-weight-bold"
-                                style={textForm}
-                            >
-                                Login
-                            </h1>
-                            <label htmlFor="inputEmail">E-mail</label>
-                            <input
-                                type="email"
-                                id="inputEmail"
-                                className="form-control mb-4 shadow-sm border-0"
-                                required={true}
-                                autoFocus
-                                onChange={e => setEmailInput(e.target.value)}
-                            />
-                            <label htmlFor="inputPassword">Senha</label>
-                            <input
-                                type="password"
-                                id="inputPassword"
-                                className="form-control mb-4 shadow-sm border-0"
-                                onChange={e => setPasswordInput(e.target.value)}
-                                required={true}
-                            />
-                            <button
-                                className="btn btn-lg btn-block text-light"
-                                type="submit"
-                                style={btnLogin}
-                            >
-                                Entrar
-                            </button>
-                        </form>
-                    </div>
+                            Login
+                        </h1>
+                        <label htmlFor="inputEmail">E-mail</label>
+                        <input
+                            type="email"
+                            id="inputEmail"
+                            className="form-control mb-4 shadow-sm border-0"
+                            required={true}
+                            autoFocus
+                            onChange={e => setEmailInput(e.target.value)}
+                        />
+                        <label htmlFor="inputPassword">Senha</label>
+                        <input
+                            type="password"
+                            id="inputPassword"
+                            className="form-control mb-4 shadow-sm border-0"
+                            onChange={e => setPasswordInput(e.target.value)}
+                            required={true}
+                        />
+                        <button
+                            className="btn btn-lg btn-block text-light"
+                            type="submit"
+                            style={styles.btnLogin}
+                        >
+                            Entrar
+                        </button>
+                    </form>
                 </div>
             </div>
         </main>
