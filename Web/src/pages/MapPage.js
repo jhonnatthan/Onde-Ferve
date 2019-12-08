@@ -30,7 +30,7 @@ const textError = {
 
 const footerSideMenu = {
     background: "#E86B52",
-    borderRadius: "4px",
+    borderRadius: "10px 10px 0 0",
 };
 
 const footerSideMenuImg = {
@@ -52,90 +52,94 @@ const MapPage = () => {
         <main className="border container-fluid">
             <div className="row">
                 <div className="col-12 col-sm-9 border"></div>
-                <div className="col-12 col-sm-3 px-3">
-                    <div className="d-flex flex-column">
-                        <h3 className="text-center" style={textEvent}>
-                            Eventos
-                        </h3>
+                <div className="col-12 col-sm-3 p-0">
+                    <div className="px-3">
+                        <div className="d-flex flex-column py-2">
+                            <h3 className="text-center" style={textEvent}>
+                                Eventos
+                            </h3>
 
-                        <div
-                            className="btn-group"
-                            role="group"
-                            aria-label="Basic example"
-                        >
-                            <button
-                                type="button"
-                                className="btn"
-                                style={(btnGroupStyle, btnGroupStyleActive)}
+                            <div
+                                className="btn-group"
+                                role="group"
+                                aria-label="Basic example"
                             >
-                                Próximos
-                            </button>
-                            <button
-                                type="button"
-                                className="btn"
-                                style={btnGroupStyle}
-                            >
-                                Populares
-                            </button>
-                            <button
-                                type="button"
-                                className="btn"
-                                style={btnGroupStyle}
-                            >
-                                Todos
-                            </button>
-                        </div>
-                    </div>
-                    <div className="d-flex my-4 flex-column">
-                        <h4 style={textLabel}>Hoje</h4>
-                        <div className="d-flex flex-column mb-2">
-                            <CardEvent />
-                            <CardEvent />
-                            <CardEvent />
-                        </div>
-                        <h4 style={textLabel}>Esta semana</h4>
-                        <div className="d-flex flex-column mb-2">
-                            <CardEvent />
-                            <CardEvent />
-                        </div>
-                        <h4 style={textLabel}>Este mês</h4>
-                        <div className="d-flex flex-column mb-4">
-                            {data.length > 0 ? (
-                                <CardEvent />
-                            ) : (
-                                <p
-                                    className="text-left font-weight-bold"
-                                    style={textError}
+                                <button
+                                    type="button"
+                                    className="btn p-1"
+                                    style={(btnGroupStyle, btnGroupStyleActive)}
                                 >
-                                    Não encontramos eventos com este filtro :(
-                                </p>
-                            )}
+                                    Próximos
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn p-1"
+                                    style={btnGroupStyle}
+                                >
+                                    Populares
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn p-1"
+                                    style={btnGroupStyle}
+                                >
+                                    Todos
+                                </button>
+                            </div>
                         </div>
-
-                        <div
-                            className="px-4 py-2 d-flex align-items-center justify-content-center"
-                            style={footerSideMenu}
-                        >
-                            <img
-                                src={profile1}
-                                style={footerSideMenuImg}
-                                alt=""
-                                className="mr-2"
-                                srcSet={profile1}
-                            />
-                            <p
-                                style={footerSideMenuName}
-                                className="m-0 font-weight-bold"
-                            >
-                                Nome do usuário
-                            </p>
-                            <i
-                                onClick={() => alert("teste")}
-                                className="fa fa-sign-out text-white d-flex ml-auto"
-                                aria-hidden="true"
-                            ></i>
+                        <div className="d-flex my-2 flex-column">
+                            <h4 style={textLabel}>Hoje</h4>
+                            <div className="d-flex flex-column mb-2">
+                                <CardEvent />
+                                <CardEvent />
+                                <CardEvent />
+                            </div>
+                            <h4 style={textLabel}>Esta semana</h4>
+                            <div className="d-flex flex-column mb-2">
+                                <CardEvent />
+                                <CardEvent />
+                            </div>
+                            <h4 style={textLabel}>Este mês</h4>
+                            <div className="d-flex flex-column">
+                                {data.length > 0 ? (
+                                    <CardEvent />
+                                ) : (
+                                    <p
+                                        className="text-left font-weight-bold"
+                                        style={textError}
+                                    >
+                                        Não encontramos eventos com este filtro
+                                        :(
+                                    </p>
+                                )}
+                            </div>
                         </div>
                     </div>
+                    {/* Footer button*/}
+                    <div
+                        className="px-4 py-2 d-flex align-items-center justify-content-center"
+                        style={footerSideMenu}
+                    >
+                        <img
+                            src={profile1}
+                            style={footerSideMenuImg}
+                            alt=""
+                            className="mr-2"
+                            srcSet={profile1}
+                        />
+                        <p
+                            style={footerSideMenuName}
+                            className="m-0 font-weight-bold"
+                        >
+                            Nome do usuário
+                        </p>
+                        <i
+                            onClick={() => alert("teste")}
+                            className="fa fa-sign-out text-white d-flex ml-auto"
+                            aria-hidden="true"
+                        ></i>
+                    </div>
+                    {/* Fim Footer button */}
                 </div>
             </div>
         </main>
