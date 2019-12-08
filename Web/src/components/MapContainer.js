@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
 
 const styles = {
@@ -8,31 +8,46 @@ const styles = {
   }
 };
 
-export class MapContainer extends Component {
-  constructor(props) {
-    super(props);
+export const MapContainer = props => {
+  const [position, setPosition] = useState(null);
+  const [markers, setMarkers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    this.state = {
-      stores: [
-        { lat: 47.49855629475769, lng: -122.14184416996333 },
-        { latitude: 47.359423, longitude: -122.021071 },
-        { latitude: 47.2052192687988, longitude: -121.988426208496 },
-        { latitude: 47.6307081, longitude: -122.1434325 },
-        { latitude: 47.3084488, longitude: -122.2140121 },
-        { latitude: 47.5524695, longitude: -122.0425407 }
-      ]
-    };
-  }
+  const getLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const {
+          coords: { latitude, longitude }
+        } = pos;
+        setPosition({ lat: latitude, lng: longitude });
+        setLoading(false);
+      },
+      () => {
+        alert("Erro ao descobrir sua posição");
+      }
+    );
+  };
 
-  displayMarkers = () => {
-    return this.state.stores.map((store, index) => {
+  const getMarkers = () => {
+    if (props.markers) {
+      setMarkers(props.markers);
+    }
+  };
+
+  useEffect(() => {
+    getLocation();
+    getMarkers();
+  }, []);
+
+  const displayMarkers = () => {
+    return markers.map((marker, index) => {
       return (
         <Marker
           key={index}
           id={index}
           position={{
-            lat: store.latitude,
-            lng: store.longitude
+            lat: marker.latitude,
+            lng: marker.longitude
           }}
           onClick={() => console.log("You clicked me!")}
         />
@@ -40,18 +55,19 @@ export class MapContainer extends Component {
     });
   };
 
-  render() {
-    return (
-      <Map
-        zoom={8}
-        style={styles.mapStyles}
-        initialCenter={{ lat: 47.444, lng: -122.176 }}
-      >
-        {this.displayMarkers()}
-      </Map>
-    );
-  }
-}
+  return loading ? (
+    <p>Carregando mapa...</p>
+  ) : (
+    <Map
+      zoom={18}
+      google={window.google}
+      style={styles.mapStyles}
+      initialCenter={position}
+    >
+      {displayMarkers()}
+    </Map>
+  );
+};
 
 export default GoogleApiWrapper({
   apiKey: "AIzaSyBm9px0l2QzS6kSEePuIEcIHv01dMVO5jc"
