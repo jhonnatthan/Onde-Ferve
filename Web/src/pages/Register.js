@@ -35,29 +35,46 @@ const styles = {
     },
 };
 
-const Auth = ({ history: { push } }) => {
+const Resgister = ({ history: { push } }) => {
+    const [name, setName] = useState("");
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [password_confirmation, setConfirm_Password] = useState("");
 
-    const handleLogin = async e => {
+    const handleRegister = async e => {
         e.preventDefault();
-        if (email === "" || password === "") {
+        if (
+            name === "" ||
+            username === "" ||
+            email === "" ||
+            password === "" ||
+            password_confirmation === ""
+        ) {
             alert("existem campos vazios");
         }
+        if (password != password_confirmation) {
+            alert("Senhas não conferem");
+        }
+
         try {
-            const response = await api.post("/auth/login", {
+            const response = await api.post("/users", {
+                name,
+                username,
                 email,
                 password,
+                password_confirmation,
             });
             const { data } = response;
+            console.log(data);
 
-            if (!data.error) {
-                storage.setUser(data.user);
-                storage.setToken(data.token);
-                push("/map");
-            } else {
-                alert(data.message);
-            }
+            // if (!data.error) {
+            //     storage.setUser(data.user);
+            //     storage.setToken(data.token);
+            //     push("/");
+            // } else {
+            //     alert(data.message);
+            // }
         } catch (error) {
             alert(error);
         }
@@ -66,7 +83,7 @@ const Auth = ({ history: { push } }) => {
     return (
         <main style={styles.mainForm}>
             <div
-                className="d-flex justify-content-center align-items-center"
+                className="d-flex justify-content-center align-items-center py-4"
                 style={styles.containerBG}
             >
                 <div
@@ -76,21 +93,37 @@ const Auth = ({ history: { push } }) => {
                     <form
                         className="form-signin p-4 card-header"
                         style={styles.formStyle}
-                        onSubmit={event => handleLogin(event)}
+                        onSubmit={event => handleRegister(event)}
                     >
                         <h1
                             className="h3 mb-3 text-center font-weight-bold"
                             style={styles.textForm}
                         >
-                            Login
+                            Registrar
                         </h1>
+                        <label htmlFor="inputNames">Nome completo</label>
+                        <input
+                            type="text"
+                            id="inputName"
+                            className="form-control mb-4 shadow-sm border-0"
+                            required={true}
+                            autoFocus
+                            onChange={e => setName(e.target.value)}
+                        />
+                        <label htmlFor="inputUserName">Nome de usuário</label>
+                        <input
+                            type="text"
+                            id="inputUserName"
+                            className="form-control mb-4 shadow-sm border-0"
+                            required={true}
+                            onChange={e => setUsername(e.target.value)}
+                        />
                         <label htmlFor="inputEmail">E-mail</label>
                         <input
                             type="email"
                             id="inputEmail"
                             className="form-control mb-4 shadow-sm border-0"
                             required={true}
-                            autoFocus
                             onChange={e => setEmail(e.target.value)}
                         />
                         <label htmlFor="inputPassword">Senha</label>
@@ -101,19 +134,29 @@ const Auth = ({ history: { push } }) => {
                             onChange={e => setPassword(e.target.value)}
                             required={true}
                         />
+                        <label htmlFor="inputConfirmPassword">
+                            Confirmar senha
+                        </label>
+                        <input
+                            type="password"
+                            id="inputConfirmPassword"
+                            className="form-control mb-4 shadow-sm border-0"
+                            onChange={e => setConfirm_Password(e.target.value)}
+                            required={true}
+                        />
                         <button
                             className="btn btn-lg btn-block text-light"
                             type="submit"
                             style={styles.btnLogin}
                         >
-                            Entrar
+                            Cadastrar
                         </button>
                         <Link
-                            to="/register"
+                            to="/"
                             className="btn btn-lg btn-block mt-4"
                             style={styles.btnRegister}
                         >
-                            Novo cadastro
+                            Voltar
                         </Link>
                     </form>
                 </div>
@@ -122,4 +165,4 @@ const Auth = ({ history: { push } }) => {
     );
 };
 
-export default Auth;
+export default Resgister;
