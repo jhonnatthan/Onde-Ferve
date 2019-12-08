@@ -9,7 +9,8 @@ const styles = {
   modalContainer: {
     borderRadius: "8px",
     maxWidth: "900px",
-    position: "relative"
+    position: "absolute",
+    backgroundColor: "white"
   },
   headerAreaContainer: {
     background: "#000"
@@ -23,11 +24,17 @@ const styles = {
   headerBtn: {
     background: "#F9F9F9",
     position: "absolute",
+    right: "30px",
+    top: "15px",
+    color: "#E86B52"
+  },
+  closeBtn: {
+    background: "#F9F9F9",
+    position: "absolute",
     right: "15px",
     top: "15px",
     color: "#E86B52"
   },
-
   eventTitle: {
     color: "#E86B52"
   },
@@ -63,6 +70,9 @@ const ModalEvent = () => (
       <div style={styles.headerArea}>
         <button className="btn" style={styles.headerBtn}>
           Como chegar
+        </button>
+        <button className="btn" style={styles.headerBtn}>
+          X
         </button>
       </div>
     </div>

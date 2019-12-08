@@ -70,7 +70,7 @@ const MapPage = () => {
     <main className="container-fluid">
       <div className="row" style={styles.mapContainer}>
         <div className="col-12 col-sm-9 border justify-content-center align-items-start d-flex map-container">
-          <MapContainer />
+          <MapContainer markerClick={event => setShowModal(true)} />
           {/* APARECER VIA MODAL/ANIMAÇÃO */}
           {showModal && <ModalEvent />}
         </div>

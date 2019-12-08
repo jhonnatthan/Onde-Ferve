@@ -19,7 +19,10 @@ export const MapContainer = props => {
         const {
           coords: { latitude, longitude }
         } = pos;
-        setPosition({ lat: latitude, lng: longitude });
+
+        const obj = { lat: latitude, lng: longitude, name: "Sua posição" };
+        setPosition(obj);
+        setMarkers([...markers, obj]);
         setLoading(false);
       },
       () => {
@@ -39,17 +42,23 @@ export const MapContainer = props => {
     getMarkers();
   }, []);
 
+  const markerClick = marker => {
+    if (props.markerClick) props.markerClick(marker);
+  };
+
   const displayMarkers = () => {
     return markers.map((marker, index) => {
+      const { name, ...position } = marker;
       return (
         <Marker
           key={index}
           id={index}
-          position={{
-            lat: marker.latitude,
-            lng: marker.longitude
+          position={position}
+          name={name}
+          icon={{
+            url: "assets/images/icon.png"
           }}
-          onClick={() => console.log("You clicked me!")}
+          onClick={() => markerClick(marker)}
         />
       );
     });
