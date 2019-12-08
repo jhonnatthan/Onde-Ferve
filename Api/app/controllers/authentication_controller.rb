@@ -10,7 +10,7 @@ class AuthenticationController < ApplicationController
       render json: { token: token, exp: time.strftime("%m-%d-%Y %H:%M"),
                     user: @user }, status: :ok
     else
-      render json: { dat: nil, message: "Usuário e/ou senha inválido", error: true }
+      render json: { data: nil, message: "Usuário e/ou senha inválido", error: true }
     end
   end
 
