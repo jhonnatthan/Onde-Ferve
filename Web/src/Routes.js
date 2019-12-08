@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import {
     BrowserRouter as Router,
@@ -14,6 +14,7 @@ import Auth from "./pages/Auth";
 import Register from "./pages/Register";
 
 import storage from "./services/storage";
+import api from "./services/api";
 
 const Routes = props => {
     const UnprotectedRoute = ({ component: Component, ...rest }) => {
