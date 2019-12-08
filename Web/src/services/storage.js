@@ -22,6 +22,13 @@ const storage = {
       console.error("Error while storing data:", error);
     }
   },
+  clear: () => {
+    try {
+      return localStorage.clear();
+    } catch (error) {
+      console.error("Error while clearing data:", error);
+    }
+  },
   getToken: () => {
     return storage.get("@user:token");
   },
