@@ -6,8 +6,8 @@ class CreateEvents < ActiveRecord::Migration[6.0]
       t.string :description
       t.datetime :date
       t.string :banner
-      t.string :lat
-      t.string :lng
+      t.float :lat
+      t.float :lng
 
       t.timestamps
     end
