@@ -55,28 +55,24 @@ const Resgister = ({ history: { push } }) => {
         }
         if (password != password_confirmation) {
             alert("Senhas não conferem");
-        }
-
-        try {
-            const response = await api.post("/users", {
-                name,
-                username,
-                email,
-                password,
-                password_confirmation,
-            });
-            const { data } = response;
-            console.log(data);
-
-            // if (!data.error) {
-            //     storage.setUser(data.user);
-            //     storage.setToken(data.token);
-            //     push("/");
-            // } else {
-            //     alert(data.message);
-            // }
-        } catch (error) {
-            alert(error);
+        } else {
+            try {
+                const response = await api.post("/users", {
+                    name,
+                    username,
+                    email,
+                    password,
+                    password_confirmation,
+                });
+                const { data } = response;
+                if (!data.error) {
+                    push("/");
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                alert(error);
+            }
         }
     };
 

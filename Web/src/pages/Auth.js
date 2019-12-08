@@ -54,6 +54,7 @@ const Auth = ({ history: { push } }) => {
             if (!data.error) {
                 storage.setUser(data.user);
                 storage.setToken(data.token);
+                api.defaults.headers.Authorization = data.token;
                 push("/map");
             } else {
                 alert(data.message);
