@@ -9,12 +9,26 @@ const styles = {
 };
 
 export const MapContainer = props => {
-  const [position, setPosition] = useState(null);
+  const [myPosition, setMyPosition] = useState(null);
   const [markers, setMarkers] = useState([]);
+  const [events] = useState(props.events);
   const [loading, setLoading] = useState(true);
 
   const getEvents = () => {
-    // setMarkers([...markers, obj]);
+    console.log("events", events);
+
+    const evMarkers = events.map(event => {
+      return {
+        id: String(event.id),
+        lat: String(event.lat),
+        lng: String(event.lng),
+        name: event.name
+      };
+    });
+
+    console.log("evMarkers", evMarkers);
+
+    setMarkers(evMarkers);
   };
 
   const getLocation = () => {
@@ -25,7 +39,7 @@ export const MapContainer = props => {
         } = pos;
 
         const obj = { lat: latitude, lng: longitude, name: "Sua posição" };
-        setPosition(obj);
+        setMyPosition(obj);
         setLoading(false);
       },
       () => {
@@ -35,21 +49,27 @@ export const MapContainer = props => {
   };
 
   useEffect(() => {
+    getEvents();
+  }, [props.events]);
+
+  useEffect(() => {
     getLocation();
     getEvents();
   }, []);
 
   const markerClick = marker => {
+    alert(marker.name);
     if (props.markerClick) props.markerClick(marker);
   };
 
   const displayMarkers = () => {
-    return markers.map((marker, index) => {
-      const { name, ...position } = marker;
+    return markers.map(marker => {
+      const { name, id, ...position } = marker;
+
       return (
         <Marker
-          key={index}
-          id={index}
+          key={id}
+          id={id}
           position={position}
           name={name}
           icon={{
@@ -68,7 +88,7 @@ export const MapContainer = props => {
       zoom={18}
       google={window.google}
       style={styles.mapStyles}
-      initialCenter={position}
+      initialCenter={myPosition}
     >
       {displayMarkers()}
     </Map>

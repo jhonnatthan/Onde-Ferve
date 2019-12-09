@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Redirect,
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
 } from "react-router-dom";
 
-import LandingPage from "./pages/LandingPage";
 import MapPage from "./pages/MapPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Auth from "./pages/Auth";
@@ -17,42 +16,56 @@ import storage from "./services/storage";
 import api from "./services/api";
 
 const Routes = props => {
-    const UnprotectedRoute = ({ component: Component, ...rest }) => {
-        const token = storage.getToken();
+  const [loading, setLoading] = useState(true);
 
-        return (
-            <Route
-                {...rest}
-                render={props =>
-                    !token ? <Component {...props} /> : <Redirect to="/map" />
-                }
-            />
-        );
-    };
+  useEffect(() => {
+    const token = storage.getToken();
 
-    const ProtectedRoute = ({ component: Component, ...rest }) => {
-        const token = storage.getToken();
+    if (token) api.defaults.headers.Authorization = token;
 
-        return (
-            <Route
-                {...rest}
-                render={props =>
-                    token ? <Component {...props} /> : <Redirect to="/" />
-                }
-            />
-        );
-    };
+    setLoading(false);
+  }, []);
+
+  const UnprotectedRoute = ({ component: Component, ...rest }) => {
+    const token = storage.getToken();
 
     return (
-        <Router>
-            <Switch>
-                <UnprotectedRoute exact path="/" component={Auth} />
-                <UnprotectedRoute path="/register" component={Register} />
-                <ProtectedRoute path="/map" component={MapPage} />
-                <Route component={NotFoundPage} />
-            </Switch>
-        </Router>
+      <Route
+        {...rest}
+        render={props =>
+          !token ? <Component {...props} /> : <Redirect to="/map" />
+        }
+      />
     );
+  };
+
+  const ProtectedRoute = ({ component: Component, ...rest }) => {
+    const token = storage.getToken();
+
+    return (
+      <Route
+        {...rest}
+        render={props =>
+          token ? <Component {...props} /> : <Redirect to="/" />
+        }
+      />
+    );
+  };
+
+  return loading ? (
+    <div className="d-flex min-vh-100 justify-content-center align-items-center">
+      <p className="h1">Carregando aplicação...</p>
+    </div>
+  ) : (
+    <Router>
+      <Switch>
+        <UnprotectedRoute exact path="/" component={Auth} />
+        <UnprotectedRoute path="/register" component={Register} />
+        <ProtectedRoute path="/map" component={MapPage} />
+        <Route component={NotFoundPage} />
+      </Switch>
+    </Router>
+  );
 };
 
 export default Routes;

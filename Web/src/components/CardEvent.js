@@ -1,8 +1,4 @@
-import React from "react";
-import imageCircle from "../assets/images/circle.png";
-import profile1 from "../assets/images/profile1.jpg";
-import profile2 from "../assets/images/profile2.jpg";
-import profile3 from "../assets/images/profile3.jpg";
+import React, { useState, useEffect } from "react";
 
 const styles = {
   cardEvent: {
@@ -43,14 +39,39 @@ const styles = {
   eventImage: {
     width: "90px",
     height: "90px",
-    borderRadius: "8px"
+    objectFit: "cover",
+    borderRadius: "8px",
+    backgroundColor: "white"
   }
 };
 
 const CardEvent = props => {
+  const [data] = useState(props.data);
+  const [previews, setPreviews] = useState([]);
+
   const handleEvent = () => {
     if (props.onClick) props.onClick();
   };
+
+  const getPreview = () => {
+    if (data.confirmations) {
+      setPreviews([]);
+    }
+  };
+
+  const formatData = string => {
+    const dateArr = string.split("T");
+
+    const dayArr = dateArr[0].split("-");
+
+    const hourArr = dateArr[1].split(":");
+
+    return `${dayArr[2]}/${dayArr[1]} às ${hourArr[0]}:${hourArr[1]}`;
+  };
+
+  useEffect(() => {
+    getPreview();
+  }, []);
 
   return (
     <div
@@ -60,41 +81,25 @@ const CardEvent = props => {
     >
       <div className="d-flex flex-column flex-fill">
         <p style={styles.textData} className="m-0">
-          02/11 às 19:30
+          {formatData(data.date)}
         </p>
         <h4
           style={styles.textTitleEvent}
           className="font-weight-bold text-truncate flex-fill m-0"
         >
-          Festa da Paçoca
+          {data.name}
         </h4>
-        <span style={styles.textLocal}>Neobpo</span>
+        <span style={styles.textLocal}>{data.location}</span>
         <div className="d-flex flex-row align-items-center px-2 mt-2">
-          <img
-            src={profile1}
-            style={styles.profileImg}
-            alt=""
-            srcSet={profile1}
-          />
-          <img
-            src={profile2}
-            style={styles.profileImg}
-            alt=""
-            srcSet={profile2}
-          />
-          <img
-            src={profile3}
-            style={styles.profileImg}
-            alt=""
-            srcSet={profile3}
-          />
+          {previews.length > 0}
+          <img src={data.banner} style={styles.profileImg} alt="" />
           <span style={styles.namesProfiles} className="ml-2">
             Jhow, Gui e Pedro
           </span>
         </div>
       </div>
       <div className="d-flex justify-content-center align-items-center">
-        <img style={styles.eventImage} src={imageCircle} alt="" srcSet="" />
+        <img style={styles.eventImage} src={data.banner} alt="" srcSet="" />
       </div>
     </div>
   );

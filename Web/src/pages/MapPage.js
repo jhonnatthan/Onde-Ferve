@@ -78,6 +78,8 @@ const MapPage = ({ history: { push } }) => {
       const { data } = response;
 
       if (!data.error) {
+        console.log(data.data);
+        setEvents(data.data);
       } else {
         alert(data.message);
       }
@@ -115,11 +117,9 @@ const MapPage = ({ history: { push } }) => {
             <h3 className="text-center" style={styles.textEvent}>
               Eventos
             </h3>
-
-            <CardEvent />
-            <CardEvent />
-            <CardEvent />
-            <CardEvent />
+            {events.map(event => (
+              <CardEvent key={event.id} data={event} />
+            ))}
           </div>
 
           <div
