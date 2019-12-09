@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import imageFesta from "../assets/images/evento-bg.png";
-import profile1 from "../assets/images/profile1.jpg";
-import profile2 from "../assets/images/profile2.jpg";
-import profile3 from "../assets/images/profile3.jpg";
 import imagemEvento from "../assets/images/evento-image.jpg";
+import api from "../services/api";
 
 const styles = {
   modalContainer: {
@@ -42,7 +40,6 @@ const styles = {
     color: "#E86B52"
   },
   eventBtnConfirm: {
-    background: "#E86B52",
     width: ""
   },
   profileImg: {
@@ -65,115 +62,159 @@ const styles = {
 };
 
 const ModalEvent = props => {
-  const [loading, setLoading] = useState(true);
+  const [lConfirmed, setLConfimed] = useState(true);
+  const [confirmed, setConfimed] = useState(false);
   const [event, setEvent] = useState(props.event);
 
   const closeModal = () => {
     if (props.onClose) props.onClose();
   };
 
+  const getEvent = () => {
+    setEvent(props.event);
+  };
+
+  const getConfirm = async () => {
+    setLConfimed(true);
+    try {
+      const response = await api.get(`/confirmations/${event.id}`);
+
+      const { data } = response;
+
+      if (!data.error) {
+        setConfimed(data.data ? true : false);
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert(error);
+    }
+    setLConfimed(false);
+  };
+
+  const toggleConfirm = () => {
+    if (!confirmed) confirmEvent();
+    else unconfirmEvent();
+  };
+
+  const confirmEvent = async () => {
+    setLConfimed(true);
+    try {
+      const response = await api.post("/confirmations", { event_id: event.id });
+
+      const { data } = response;
+
+      if (!data.error) {
+        setConfimed(true);
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert(error);
+    }
+    setLConfimed(false);
+  };
+
+  const unconfirmEvent = async () => {
+    setLConfimed(true);
+    try {
+      const response = await api.delete(`/confirmations/${event.id}`);
+
+      const { data } = response;
+
+      if (!data.error) {
+        setConfimed(false);
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert(error);
+    }
+    setLConfimed(false);
+  };
+
+  useEffect(() => {
+    getConfirm();
+  }, [event]);
+
+  useEffect(() => {
+    getEvent();
+  }, [props.event]);
+
+  useEffect(() => {
+    getEvent();
+  }, []);
+
   return (
     <div className="shadow mt-5 " style={styles.modalContainer}>
-      <div style={styles.headerAreaContainer}>
-        <div style={styles.headerArea}>
-          <button className="btn" style={styles.headerBtn} onClick={closeModal}>
-            X
-          </button>
+      {!event ? (
+        <div className="d-flex justify-content-center align-items-center h-100 p-5">
+          <h1>Carregando dados...</h1>
         </div>
-      </div>
-      <div className="d-flex flex-row p-3">
-        <div className="w-50 p-2">
-          <h3 style={styles.eventTitle}>Festa da paçoca</h3>
-          <span style={styles.eventLocal}>Local da festa</span>
-          <p className="mt-2 font-weight-bold">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi nemo
-            accusamus nam modi nesciunt nostrum minus vel laboriosam enim,
-            possimus non! Atque nemo vitae adipisci aliquam harum accusamus
-            maiores nostrum. Lorem ipsum dolor sit amet consectetur, adipisicing
-            elit. Beatae aut ex sunt blanditiis rerum exercitationem recusandae
-            velit neque deleniti tenetur quo quaerat laborum quas sit alias,
-            suscipit ratione voluptas culpa? lore
-          </p>
-        </div>
-        <div className="w-50 p-2">
-          {/* Area de confirmação */}
-          <div className="d-flex justify-content-center flex-column py-2">
-            <button
-              style={styles.eventBtnConfirm}
-              className="btn text-white font-weight-bold mb-2"
-            >
-              Confirmar presença
-            </button>
-            <div className="d-flex flex-row align-items-center px-2 mt-2">
-              <img
-                src={profile1}
-                style={styles.profileImg}
-                alt=""
-                srcSet={profile1}
-              />
-              <img
-                src={profile2}
-                style={styles.profileImg}
-                alt=""
-                srcSet={profile2}
-              />
-              <img
-                src={profile3}
-                style={styles.profileImg}
-                alt=""
-                srcSet={profile3}
-              />
-              <span style={styles.namesProfiles} className="ml-2">
-                Jhow, Gui e Pedro
-              </span>
+      ) : (
+        <Fragment>
+          <div style={styles.headerAreaContainer}>
+            <div style={styles.headerArea}>
+              <button
+                className="btn"
+                style={styles.headerBtn}
+                onClick={closeModal}
+              >
+                X
+              </button>
             </div>
           </div>
-          {/* Fim Area de confirmação */}
-          {/* Area de rede*/}
-          <div className="d-flex flex-column mt-3">
-            <h5 style={styles.eventTitle}>Na rede</h5>
-            <div className="d-flex flex-wrap">
-              <img
-                className="m-2"
-                src={imagemEvento}
-                style={styles.events}
-                alt=""
-              />
-              <img
-                className="m-2"
-                src={imagemEvento}
-                style={styles.events}
-                alt=""
-              />
-              <img
-                className="m-2"
-                src={imagemEvento}
-                style={styles.events}
-                alt=""
-              />
-              <img
-                className="m-2"
-                src={imagemEvento}
-                style={styles.events}
-                alt=""
-              />
-              <img
-                className="m-2"
-                src={imagemEvento}
-                style={styles.events}
-                alt=""
-              />
-              <img
-                className="m-2"
-                src={imagemEvento}
-                style={styles.events}
-                alt=""
-              />
+          <div className="d-flex flex-row p-3">
+            <div className="w-50 p-2">
+              <h3 style={styles.eventTitle}>{event.name}</h3>
+              <span style={styles.eventLocal}>{event.location}</span>
+              <p className="mt-2 font-weight-bold">{event.description}</p>
+            </div>
+            <div className="w-50 p-2">
+              {/* Area de confirmação */}
+              <div className="d-flex justify-content-center flex-column py-2">
+                <button
+                  style={styles.eventBtnConfirm}
+                  className={`btn text-white font-weight-bold mb-2 ${
+                    lConfirmed
+                      ? "btn-info"
+                      : confirmed
+                      ? "btn-danger"
+                      : "btn-success"
+                  }`}
+                  disabled={lConfirmed}
+                  onClick={toggleConfirm}
+                >
+                  {lConfirmed
+                    ? "Carregando presença..."
+                    : confirmed
+                    ? "Remover presença"
+                    : "Confirmar presença"}
+                </button>
+                <div className="d-flex flex-row align-items-center px-2 mt-2">
+                  <img
+                    src="/assets/images/user.png"
+                    style={styles.profileImg}
+                    alt=""
+                  />
+                  <span style={styles.namesProfiles} className="ml-2">
+                    Jhow, Gui e Pedro
+                  </span>
+                </div>
+              </div>
+              {/* Fim Area de confirmação */}
+              {/* Area de rede*/}
+              <div className="d-flex flex-column mt-3">
+                <h5 style={styles.eventTitle}>Na rede</h5>
+                <div className="d-flex flex-wrap">
+                  <h5>Ainda não há fotos deste evento :(</h5>
+                </div>
+              </div>
+              {/* Fim Area de rede*/}
             </div>
           </div>
-          {/* Fim Area de rede*/}
-        </div>
-      </div>
+        </Fragment>
+      )}
     </div>
   );
 };

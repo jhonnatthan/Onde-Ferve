@@ -80,7 +80,6 @@ const MapPage = ({ history: { push } }) => {
       const { data } = response;
 
       if (!data.error) {
-        console.log(data.data);
         setEvents(data.data);
       } else {
         alert(data.message);
@@ -100,14 +99,16 @@ const MapPage = ({ history: { push } }) => {
     getEvents();
   }, []);
 
+  const eventOpen = _event => {
+    setEvent(_event);
+    setShowModal(true);
+  };
+
   return (
-    <main className="container-fluid">
-      <div className="row" style={styles.mapContainer}>
-        <div className="col-12 col-sm-9 border justify-content-center align-items-start d-flex map-container">
-          <MapContainer
-            markerClick={_event => setShowModal(true)}
-            events={events}
-          />
+    <main>
+      <div className="row m-0" style={styles.mapContainer}>
+        <div className="col-12 col-sm-9 border justify-content-center align-items-start d-flex map-container p-0">
+          <MapContainer markerClick={eventOpen} events={events} />
           {/* APARECER VIA MODAL/ANIMAÇÃO */}
           {showModal && (
             <ModalEvent onClose={() => setShowModal(false)} event={event} />
@@ -122,11 +123,7 @@ const MapPage = ({ history: { push } }) => {
               Eventos
             </h3>
             {events.map(event => (
-              <CardEvent
-                key={event.id}
-                data={event}
-                onClick={() => setShowModal(true)}
-              />
+              <CardEvent key={event.id} event={event} onCardClick={eventOpen} />
             ))}
           </div>
 

@@ -45,16 +45,21 @@ const styles = {
 };
 
 const CardEvent = props => {
-  const [data] = useState(props.data);
+  const [event, setEvent] = useState(props.event);
+
   const [previews, setPreviews] = useState([]);
 
+  const getEvent = () => {
+    setEvent(props.event);
+  };
+
   const handleEvent = () => {
-    if (props.onClick) props.onClick();
+    if (props.onCardClick) props.onCardClick(event);
   };
 
   const getPreview = () => {
-    if (data.confirmations) {
-      const firsts = data.confirmations.splice(0, 10);
+    if (event.confirmations) {
+      const firsts = event.confirmations.splice(0, 10);
 
       const firstsName = firsts.map(first => {
         const names = first.name.split(" ");
@@ -75,6 +80,11 @@ const CardEvent = props => {
   };
 
   useEffect(() => {
+    getEvent();
+  }, [props.event]);
+
+  useEffect(() => {
+    getEvent();
     getPreview();
   }, []);
 
@@ -86,19 +96,20 @@ const CardEvent = props => {
     >
       <div className="col-8">
         <p style={styles.textData} className="m-0">
-          {formatData(data.date)}
+          {formatData(event.date)}
         </p>
         <h4
           style={styles.textTitleEvent}
           className="font-weight-bold text-truncate flex-fill m-0"
         >
-          {data.name}
+          {event.name}
         </h4>
-        <span style={styles.textLocal}>{data.location}</span>
+        <span style={styles.textLocal}>{event.location}</span>
 
         <div className="d-flex flex-row">
-          {previews.map(preview => (
+          {previews.map((preview, idx) => (
             <img
+              key={idx}
               className="event__profile"
               src="/assets/images/user.png"
               style={styles.profileImg}
@@ -118,7 +129,7 @@ const CardEvent = props => {
       <img
         className="col-4 p-0"
         style={styles.eventImage}
-        src={data.banner}
+        src={event.banner}
         alt=""
         srcSet=""
       />

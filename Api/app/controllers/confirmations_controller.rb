@@ -1,7 +1,7 @@
 class ConfirmationsController < ApplicationController
     before_action :authorize_request
     before_action :find_event, only: %i[create]
-    before_action :find_confirmation, only: %i[destroy]
+    before_action :find_confirmation, only: %i[show destroy]
 
     # POST /confirmations
     def create
@@ -11,10 +11,10 @@ class ConfirmationsController < ApplicationController
             if @confirmation.save
                 render json: { data: @confirmation, message: 'Presença confirmada com sucesso', error: false }
             else
-                render json: { data: @event.errors.full_messages, message: 'Erro ao confirmar presença', error: true }
+                render json: { data: @confirmation.errors.full_messages, message: 'Erro ao confirmar presença', error: true }
             end
         else
-            render json: { data: @confirmation, user: @current_user.id, message: 'Você já confirmou presença neste evento', error: true }
+            render json: { data: @confirmation, message: 'Você já confirmou presença neste evento', error: true }
         end
     end
     
@@ -25,13 +25,18 @@ class ConfirmationsController < ApplicationController
 
     # DELETE /confirmations/{id}
     def destroy
-        @confirmation.destroy
+        @tmpConfirmation = @confirmation;
+        if @confirmation.destroy
+            render json: { data: @tmpConfirmation, message: 'Presença removida com sucesso', error: false }
+        else
+            render json: { data: @confirmation.errors.full_messages, message: 'Falha ao remover presença', error: true }
+        end
     end
 
     private
 
     def find_confirmation
-        @confirmation = Confirmation.where('user_id', '=', @current_user.id).where('event_id', '=', params[:event_id]).first
+        @confirmation = Confirmation.where(event_id: params[:event_id]).where(user_id: @current_user.id).first
     rescue ActiveRecord::RecordNotFound
         render json: { data: nil, message: "Presença não confirmada", error: true }
     end

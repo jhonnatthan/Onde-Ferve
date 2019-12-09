@@ -11,7 +11,6 @@ const styles = {
 export const MapContainer = props => {
   const [myPosition, setMyPosition] = useState(null);
   const [markers, setMarkers] = useState([]);
-  const [events] = useState(props.events);
   const [loading, setLoading] = useState(true);
 
   const getEvents = () => {
