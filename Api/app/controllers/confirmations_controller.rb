@@ -37,8 +37,9 @@ class ConfirmationsController < ApplicationController
 
     def find_confirmation
         @confirmation = Confirmation.where(event_id: params[:event_id]).where(user_id: @current_user.id).first
-    rescue ActiveRecord::RecordNotFound
-        render json: { data: nil, message: "Presença não confirmada", error: true }
+        unless @confirmation
+            render json: { data: nil, message: "Presença não encontrada", error: true }
+        end
     end
 
     def find_event
