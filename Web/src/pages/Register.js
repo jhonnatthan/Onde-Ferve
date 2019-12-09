@@ -9,6 +9,7 @@ const styles = {
   },
 
   containerBG: {
+    background: `transparent url(${imageFesta}) 0% 0% no-repeat padding-box`,
     backgroundSize: "cover",
     minHeight: "100vh"
     // opacity: 0.61,

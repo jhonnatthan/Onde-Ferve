@@ -6,7 +6,8 @@ const styles = {
     borderRadius: "8px",
     maxWidth: "900px",
     position: "absolute",
-    backgroundColor: "white"
+    backgroundColor: "white",
+    zIndex: 9999
   },
   headerAreaContainer: {
     background: "#000"
@@ -205,13 +206,13 @@ const ModalEvent = props => {
               </button>
             </div>
           </div>
-          <div className="d-flex flex-row p-3">
-            <div className="w-50 p-2">
+          <div className="d-flex row p-3">
+            <div className="col-12 col-sm-6 p-2">
               <h3 style={styles.eventTitle}>{event.name}</h3>
               <span style={styles.eventLocal}>{event.location}</span>
               <p className="mt-2 font-weight-bold">{event.description}</p>
             </div>
-            <div className="w-50 p-2">
+            <div className="col-12 col-sm-6 p-2">
               {/* Area de confirmação */}
               <div className="d-flex justify-content-center flex-column py-2">
                 <button

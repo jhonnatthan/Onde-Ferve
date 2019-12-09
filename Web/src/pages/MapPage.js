@@ -54,7 +54,12 @@ const styles = {
     color: "#F2F1F1",
     fontSize: ".9rem"
   },
+  leftContainer: {
+    minHeight: "90vh",
+    maxHeight: "100vh"
+  },
   rightContainer: {
+    minHeight: "100vh",
     maxHeight: "100vh"
   },
   barContainer: {
@@ -110,7 +115,10 @@ const MapPage = ({ history: { push } }) => {
   return (
     <main>
       <div className="row m-0" style={styles.mapContainer}>
-        <div className="col-12 col-sm-9 border justify-content-center align-items-start d-flex map-container p-0">
+        <div
+          className="col-12 col-sm-9 border justify-content-center align-items-start d-flex map-container p-0"
+          style={styles.leftContainer}
+        >
           <MapContainer markerClick={eventOpen} events={events} />
           {/* APARECER VIA MODAL/ANIMAÇÃO */}
           {showModal && (
