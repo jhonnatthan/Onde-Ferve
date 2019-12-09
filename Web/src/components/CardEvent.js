@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 
 const styles = {
   cardEvent: {
@@ -24,11 +24,11 @@ const styles = {
 
   profileImg: {
     border: "2px #E86B52 solid",
-    marginLeft: "-7px",
     width: "25px",
     height: "25px",
     objectFit: "cover",
-    borderRadius: "17.5px"
+    borderRadius: "17.5px",
+    backgroundColor: "white"
   },
 
   namesProfiles: {
@@ -55,7 +55,13 @@ const CardEvent = props => {
 
   const getPreview = () => {
     if (data.confirmations) {
-      setPreviews([]);
+      const firsts = data.confirmations.splice(0, 3);
+
+      const firstsName = firsts.map(first => {
+        const names = first.name.split(" ");
+        return names[0];
+      });
+      setPreviews(firstsName);
     }
   };
 
@@ -76,7 +82,7 @@ const CardEvent = props => {
   return (
     <div
       style={styles.cardEvent}
-      className="d-flex justify-content-between p-2 my-2"
+      className="d-flex justify-content-between p-2 my-2 align-items-center"
       onClick={handleEvent}
     >
       <div className="d-flex flex-column flex-fill">
@@ -90,17 +96,27 @@ const CardEvent = props => {
           {data.name}
         </h4>
         <span style={styles.textLocal}>{data.location}</span>
-        <div className="d-flex flex-row align-items-center px-2 mt-2">
-          {previews.length > 0}
-          <img src={data.banner} style={styles.profileImg} alt="" />
-          <span style={styles.namesProfiles} className="ml-2">
-            Jhow, Gui e Pedro
-          </span>
+
+        <div className="d-flex flex-row">
+          {previews.map(preview => (
+            <img
+              className="event__profile"
+              src="/assets/images/user.png"
+              style={styles.profileImg}
+              alt=""
+            />
+          ))}
         </div>
+
+        {previews.length > 0 && (
+          <Fragment>
+            <p style={styles.namesProfiles} className="m-0">
+              {previews.join(", ")}
+            </p>
+          </Fragment>
+        )}
       </div>
-      <div className="d-flex justify-content-center align-items-center">
-        <img style={styles.eventImage} src={data.banner} alt="" srcSet="" />
-      </div>
+      <img style={styles.eventImage} src={data.banner} alt="" srcSet="" />
     </div>
   );
 };

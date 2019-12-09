@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 import CardEvent from "../components/CardEvent";
 import ModalEvent from "../components/ModalEvent";
-import profile1 from "../assets/images/profile1.jpg";
 import MapContainer from "../components/MapContainer";
 import storage from "../services/storage";
 import api from "../services/api";
@@ -46,7 +45,9 @@ const styles = {
     border: "2px #E86B52 solid",
     width: "30px",
     height: "30px",
-    borderRadius: "15px"
+    borderRadius: "15px",
+    objectFit: "contain",
+    backgroundColor: "white"
   },
 
   footerSideMenuName: {
@@ -127,11 +128,10 @@ const MapPage = ({ history: { push } }) => {
             style={styles.footerSideMenu}
           >
             <img
-              src={profile1}
+              src="/assets/images/user.png"
               style={styles.footerSideMenuImg}
               alt=""
               className="mr-2"
-              srcSet={profile1}
             />
             <p
               style={styles.footerSideMenuName}

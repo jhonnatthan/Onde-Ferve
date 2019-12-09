@@ -5,7 +5,7 @@ class ConfirmationsController < ApplicationController
 
     # POST /confirmations
     def create
-        @confirmation = Confirmation.where('user_id', '=', @current_user.id).where('event_id', '=', params[:event_id]).first
+        @confirmation = Confirmation.where(event_id: @event.id).where(user_id: @current_user.id).first
         unless @confirmation
             @confirmation = Confirmation.new(event_id: @event.id, user_id: @current_user.id)
             if @confirmation.save
@@ -14,7 +14,7 @@ class ConfirmationsController < ApplicationController
                 render json: { data: @event.errors.full_messages, message: 'Erro ao confirmar presença', error: true }
             end
         else
-            render json: { data: nil, message: 'Você já confirmou presença neste evento', error: true }
+            render json: { data: @confirmation, user: @current_user.id, message: 'Você já confirmou presença neste evento', error: true }
         end
     end
     

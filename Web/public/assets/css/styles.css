@@ -5,3 +5,7 @@
   margin-right: -15px !important;
   margin-left: -15px !important;
 }
+
+.event__profile:not(:first-child) {
+  margin-left: -7px;
+}
