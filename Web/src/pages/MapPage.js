@@ -60,6 +60,9 @@ const styles = {
   barContainer: {
     flex: 1,
     overflowY: "scroll"
+  },
+  iconLogout: {
+    cursor: "pointer"
   }
 };
 
@@ -148,6 +151,7 @@ const MapPage = ({ history: { push } }) => {
               {user && user.name}
             </p>
             <i
+              style={styles.iconLogout}
               onClick={logout}
               className="fa fa-sign-out text-white d-flex ml-auto h5 m-0"
               aria-hidden="true"

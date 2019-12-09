@@ -3,7 +3,8 @@ import React, { useState, useEffect, Fragment } from "react";
 const styles = {
   cardEvent: {
     background: "#E86B52",
-    borderRadius: "8px"
+    borderRadius: "8px",
+    cursor: "pointer"
   },
 
   textData: {
@@ -107,6 +108,7 @@ const CardEvent = props => {
         >
           {event.name}
         </h4>
+
         <span style={styles.textLocal}>{event.location}</span>
 
         <div className="d-flex flex-row">
