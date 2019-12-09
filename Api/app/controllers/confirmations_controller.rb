@@ -25,11 +25,15 @@ class ConfirmationsController < ApplicationController
 
     # DELETE /confirmations/{id}
     def destroy
-        @tmpConfirmation = @confirmation;
-        if @confirmation.destroy
-            render json: { data: @tmpConfirmation, message: 'Presença removida com sucesso', error: false }
+        if @confirmation
+            @tmpConfirmation = @confirmation;
+            if @confirmation.destroy
+                render json: { data: @tmpConfirmation, message: 'Presença removida com sucesso', error: false }
+            else
+                render json: { data: @confirmation.errors.full_messages, message: 'Falha ao remover presença', error: true }
+            end
         else
-            render json: { data: @confirmation.errors.full_messages, message: 'Falha ao remover presença', error: true }
+            render json: { data: nil, message: 'Presença não encontrada', error: true }
         end
     end
 
@@ -37,9 +41,6 @@ class ConfirmationsController < ApplicationController
 
     def find_confirmation
         @confirmation = Confirmation.where(event_id: params[:event_id]).where(user_id: @current_user.id).first
-        unless @confirmation
-            render json: { data: nil, message: "Presença não encontrada", error: true }
-        end
     end
 
     def find_event

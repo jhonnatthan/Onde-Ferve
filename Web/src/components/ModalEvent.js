@@ -135,6 +135,8 @@ const ModalEvent = props => {
 
   useEffect(() => {
     getConfirm();
+
+    console.log(event.confirmations);
   }, [event]);
 
   useEffect(() => {

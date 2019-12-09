@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
     before_action :authorize_request
-    before_action :find_event, except: %i[create index]
+    before_action :find_event, except: %i[create index destroy]
 
     # GET /events
     def index
@@ -42,15 +42,20 @@ class EventsController < ApplicationController
 
     # DELETE /events/{id}
     def destroy
-        @confirmations = Confirmation.where('event_id', '=', @event.id)
+        @event = Event.find_by_id!(params[:id])
+        @confirmations = Confirmation.where(event_id: @event.id)
         @confirmations.destroy_all
         @event.destroy
+
+        render json: { data: nil, message: 'Evento deletado com sucesso', error: false }
+    rescue ActiveRecord::RecordNotFound
+        render json: { data: nil, message: "Evento não encontrado", error: true }
     end
 
     private
 
     def find_event
-        @event = Event.left_outer_joins(:confirmation).where('events.id', '=', params[:id]).first
+        @event = Event.where('events.id', '=', params[:id]).first
 
         @event = @event.as_json.tap do |event|
             @confirmations = Confirmation.select('users.id, users.name').joins(:user).where(event_id: @event.id);
