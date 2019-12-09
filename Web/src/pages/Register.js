@@ -9,7 +9,6 @@ const styles = {
   },
 
   containerBG: {
-    background: `transparent url(${imageFesta}) 0% 0% no-repeat padding-box`,
     backgroundSize: "cover",
     minHeight: "100vh"
     // opacity: 0.61,
@@ -35,6 +34,7 @@ const styles = {
 };
 
 const Resgister = ({ history: { push } }) => {
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -43,6 +43,7 @@ const Resgister = ({ history: { push } }) => {
 
   const handleRegister = async e => {
     e.preventDefault();
+    setLoading(true);
     if (
       name === "" ||
       username === "" ||
@@ -51,28 +52,30 @@ const Resgister = ({ history: { push } }) => {
       password_confirmation === ""
     ) {
       alert("existem campos vazios");
-    }
-    if (password !== password_confirmation) {
-      alert("Senhas não conferem");
     } else {
-      try {
-        const response = await api.post("/users", {
-          name,
-          username,
-          email,
-          password,
-          password_confirmation
-        });
-        const { data } = response;
-        if (!data.error) {
-          push("/");
-        } else {
-          alert(data.message);
+      if (password !== password_confirmation) {
+        alert("Senhas não conferem");
+      } else {
+        try {
+          const response = await api.post("/users", {
+            name,
+            username,
+            email,
+            password,
+            password_confirmation
+          });
+          const { data } = response;
+          if (!data.error) {
+            push("/");
+          } else {
+            alert(data.message);
+          }
+        } catch (error) {
+          alert(error);
         }
-      } catch (error) {
-        alert(error);
       }
     }
+    setLoading(false);
   };
 
   return (
@@ -138,8 +141,9 @@ const Resgister = ({ history: { push } }) => {
               className="btn btn-lg btn-block text-light"
               type="submit"
               style={styles.btnLogin}
+              disabled={loading}
             >
-              Cadastrar
+              {loading ? "Carregando..." : "Cadastrar"}
             </button>
             <Link
               to="/"

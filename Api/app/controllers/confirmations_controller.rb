@@ -3,6 +3,15 @@ class ConfirmationsController < ApplicationController
     before_action :find_event, only: %i[create]
     before_action :find_confirmation, only: %i[show destroy]
 
+    # GET /confirmations
+    def index 
+        @confirmations = Confirmation.select('users.id, users.name').joins(:user).where(event_id: params[:event_id]);
+
+        render json: { data: @confirmations, message: "Confirmações listadas com sucesso", error: false }
+        rescue ActiveRecord::RecordNotFound
+            render json: { data: @confirmations, message: "Não há confirmações", error: false }
+    end
+
     # POST /confirmations
     def create
         @confirmation = Confirmation.where(event_id: @event.id).where(user_id: @current_user.id).first

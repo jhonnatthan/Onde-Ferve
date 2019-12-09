@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
+import api from "../services/api";
 
 const styles = {
   cardEvent: {
@@ -47,6 +48,7 @@ const styles = {
 
 const CardEvent = props => {
   const [event, setEvent] = useState(props.event);
+  const [confirmations, setConfirmations] = useState([]);
 
   const [previews, setPreviews] = useState([]);
 
@@ -58,16 +60,28 @@ const CardEvent = props => {
     if (props.onCardClick) props.onCardClick(event);
   };
 
-  const getPreview = () => {
-    if (event.confirmations) {
-      const firsts = event.confirmations.splice(0, 10);
+  const getConfirmations = async () => {
+    try {
+      const response = await api.get(`/confirmations?event_id=${event.id}`);
 
-      const firstsName = firsts.map(first => {
-        const names = first.name.split(" ");
-        return names[0];
-      });
-      setPreviews(firstsName);
-    }
+      const { data } = response;
+
+      if (!data.error) {
+        setConfirmations(data.data);
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {}
+  };
+
+  const getPreview = () => {
+    const firsts = confirmations.splice(0, 10);
+
+    const firstsName = firsts.map(first => {
+      const names = first.name.split(" ");
+      return names[0];
+    });
+    setPreviews(firstsName);
   };
 
   const formatData = string => {
@@ -82,15 +96,19 @@ const CardEvent = props => {
 
   useEffect(() => {
     getEvent();
-  }, [props.event]);
-
-  useEffect(() => {
-    getEvent();
   }, []);
 
   useEffect(() => {
-    getPreview();
+    getEvent();
+  }, [props.event]);
+
+  useEffect(() => {
+    getConfirmations();
   }, [event]);
+
+  useEffect(() => {
+    getPreview();
+  }, [confirmations]);
 
   return (
     <div

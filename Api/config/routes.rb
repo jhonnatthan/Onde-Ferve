@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get "/", to: "application#welcome"
   resources :users, param: :id
   resources :events, param: :id
-  resources :confirmations, param: :event_id, only: [:create, :show, :destroy]
+  resources :confirmations, param: :event_id, only: [:index, :create, :show, :destroy]
   post "/auth/login", to: "authentication#login"
   get "/*a", to: "application#not_found"
 end

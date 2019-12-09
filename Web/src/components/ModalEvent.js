@@ -47,10 +47,10 @@ const styles = {
   },
   profileImg: {
     border: "2px #E86B52 solid",
-    marginLeft: "-7px",
     width: "20px",
     height: "20px",
-    borderRadius: "10px"
+    borderRadius: "10px",
+    backgroundColor: "white"
   },
 
   namesProfiles: {
@@ -68,6 +68,8 @@ const ModalEvent = props => {
   const [lConfirmed, setLConfimed] = useState(true);
   const [confirmed, setConfimed] = useState(false);
   const [event, setEvent] = useState(props.event);
+  const [confirmations, setConfirmations] = useState([]);
+  const [previews, setPreviews] = useState([]);
 
   const closeModal = () => {
     if (props.onClose) props.onClose();
@@ -75,6 +77,30 @@ const ModalEvent = props => {
 
   const getEvent = () => {
     setEvent(props.event);
+  };
+
+  const getConfirmations = async () => {
+    try {
+      const response = await api.get(`/confirmations?event_id=${event.id}`);
+
+      const { data } = response;
+
+      if (!data.error) {
+        setConfirmations(data.data);
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {}
+  };
+
+  const getPreview = () => {
+    const firsts = confirmations.splice(0, 10);
+
+    const firstsName = firsts.map(first => {
+      const names = first.name.split(" ");
+      return names[0];
+    });
+    setPreviews(firstsName);
   };
 
   const getConfirm = async () => {
@@ -139,18 +165,25 @@ const ModalEvent = props => {
   };
 
   useEffect(() => {
-    getConfirm();
-
-    console.log(event.confirmations);
-  }, [event]);
+    getEvent();
+  }, []);
 
   useEffect(() => {
     getEvent();
   }, [props.event]);
 
   useEffect(() => {
-    getEvent();
-  }, []);
+    getConfirm();
+    getConfirmations();
+  }, [event]);
+
+  useEffect(() => {
+    getConfirmations();
+  }, [confirmed]);
+
+  useEffect(() => {
+    getPreview();
+  }, [confirmations]);
 
   return (
     <div className="shadow mt-5 " style={styles.modalContainer}>
@@ -199,26 +232,36 @@ const ModalEvent = props => {
                     ? "Remover presença"
                     : "Confirmar presença"}
                 </button>
-                <div className="d-flex flex-row align-items-center px-2 mt-2">
-                  <img
-                    src="/assets/images/user.png"
-                    style={styles.profileImg}
-                    alt=""
-                  />
-                  <span style={styles.namesProfiles} className="ml-2">
-                    Jhow, Gui e Pedro
-                  </span>
+                <div className="d-flex flex-column justify-items-center mt-2">
+                  <div className="d-flex flex-row ">
+                    {previews.map((preview, idx) => (
+                      <img
+                        key={idx}
+                        className="event__profile"
+                        src="/assets/images/user.png"
+                        style={styles.profileImg}
+                        alt=""
+                      />
+                    ))}
+                  </div>
+                  {previews.length > 0 && (
+                    <Fragment>
+                      <p
+                        style={styles.namesProfiles}
+                        className="m-0 text-truncate"
+                      >
+                        {previews.join(", ")}
+                      </p>
+                    </Fragment>
+                  )}
                 </div>
               </div>
-              {/* Fim Area de confirmação */}
-              {/* Area de rede*/}
               <div className="d-flex flex-column mt-3">
                 <h5 style={styles.eventTitle}>Na rede</h5>
                 <div className="d-flex flex-wrap">
                   <h5>Ainda não há fotos deste evento :(</h5>
                 </div>
               </div>
-              {/* Fim Area de rede*/}
             </div>
           </div>
         </Fragment>
