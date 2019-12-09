@@ -15,20 +15,7 @@ export const MapContainer = props => {
   const [loading, setLoading] = useState(true);
 
   const getEvents = () => {
-    console.log("events", events);
-
-    const evMarkers = events.map(event => {
-      return {
-        id: String(event.id),
-        lat: String(event.lat),
-        lng: String(event.lng),
-        name: event.name
-      };
-    });
-
-    console.log("evMarkers", evMarkers);
-
-    setMarkers(evMarkers);
+    setMarkers(props.events);
   };
 
   const getLocation = () => {
@@ -58,7 +45,6 @@ export const MapContainer = props => {
   }, []);
 
   const markerClick = marker => {
-    alert(marker.name);
     if (props.markerClick) props.markerClick(marker);
   };
 

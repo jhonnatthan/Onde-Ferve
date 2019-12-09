@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import imageFesta from "../assets/images/evento-bg.png";
 import profile1 from "../assets/images/profile1.jpg";
 import profile2 from "../assets/images/profile2.jpg";
@@ -65,6 +65,9 @@ const styles = {
 };
 
 const ModalEvent = props => {
+  const [loading, setLoading] = useState(true);
+  const [event, setEvent] = useState(props.event);
+
   const closeModal = () => {
     if (props.onClose) props.onClose();
   };
@@ -73,9 +76,6 @@ const ModalEvent = props => {
     <div className="shadow mt-5 " style={styles.modalContainer}>
       <div style={styles.headerAreaContainer}>
         <div style={styles.headerArea}>
-          <button className="btn" style={styles.headerBtn}>
-            Como chegar
-          </button>
           <button className="btn" style={styles.headerBtn} onClick={closeModal}>
             X
           </button>

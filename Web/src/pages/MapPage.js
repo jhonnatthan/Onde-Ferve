@@ -67,6 +67,7 @@ const MapPage = ({ history: { push } }) => {
   const [user, setUser] = useState(null);
   const [events, setEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [event, setEvent] = useState(null);
 
   const logout = () => {
     storage.clear();
@@ -104,11 +105,13 @@ const MapPage = ({ history: { push } }) => {
       <div className="row" style={styles.mapContainer}>
         <div className="col-12 col-sm-9 border justify-content-center align-items-start d-flex map-container">
           <MapContainer
-            markerClick={event => setShowModal(true)}
+            markerClick={_event => setShowModal(true)}
             events={events}
           />
           {/* APARECER VIA MODAL/ANIMAÇÃO */}
-          {showModal && <ModalEvent onClose={() => setShowModal(false)} />}
+          {showModal && (
+            <ModalEvent onClose={() => setShowModal(false)} event={event} />
+          )}
         </div>
         <div
           className="col-12 col-sm-3 justify-content-between d-flex flex-column"
@@ -119,7 +122,11 @@ const MapPage = ({ history: { push } }) => {
               Eventos
             </h3>
             {events.map(event => (
-              <CardEvent key={event.id} data={event} />
+              <CardEvent
+                key={event.id}
+                data={event}
+                onClick={() => setShowModal(true)}
+              />
             ))}
           </div>
 

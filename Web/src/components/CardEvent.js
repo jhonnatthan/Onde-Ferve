@@ -12,8 +12,7 @@ const styles = {
   },
   textTitleEvent: {
     color: "#F2F1F1",
-    fontSize: "1rem",
-    maxWidth: "135px"
+    fontSize: "1rem"
   },
 
   textLocal: {
@@ -37,7 +36,7 @@ const styles = {
   },
 
   eventImage: {
-    width: "90px",
+    width: "100%",
     height: "90px",
     objectFit: "cover",
     borderRadius: "8px",
@@ -55,7 +54,7 @@ const CardEvent = props => {
 
   const getPreview = () => {
     if (data.confirmations) {
-      const firsts = data.confirmations.splice(0, 3);
+      const firsts = data.confirmations.splice(0, 10);
 
       const firstsName = firsts.map(first => {
         const names = first.name.split(" ");
@@ -82,10 +81,10 @@ const CardEvent = props => {
   return (
     <div
       style={styles.cardEvent}
-      className="d-flex justify-content-between p-2 my-2 align-items-center"
+      className="row m-0 justify-content-between p-2 my-2 align-items-center"
       onClick={handleEvent}
     >
-      <div className="d-flex flex-column flex-fill">
+      <div className="col-8">
         <p style={styles.textData} className="m-0">
           {formatData(data.date)}
         </p>
@@ -110,13 +109,19 @@ const CardEvent = props => {
 
         {previews.length > 0 && (
           <Fragment>
-            <p style={styles.namesProfiles} className="m-0">
+            <p style={styles.namesProfiles} className="m-0 text-truncate">
               {previews.join(", ")}
             </p>
           </Fragment>
         )}
       </div>
-      <img style={styles.eventImage} src={data.banner} alt="" srcSet="" />
+      <img
+        className="col-4 p-0"
+        style={styles.eventImage}
+        src={data.banner}
+        alt=""
+        srcSet=""
+      />
     </div>
   );
 };
