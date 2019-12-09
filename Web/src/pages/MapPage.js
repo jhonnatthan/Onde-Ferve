@@ -59,7 +59,7 @@ const styles = {
   },
   barContainer: {
     flex: 1,
-    overflow: "scroll"
+    overflowY: "scroll"
   }
 };
 
@@ -111,7 +111,11 @@ const MapPage = ({ history: { push } }) => {
           <MapContainer markerClick={eventOpen} events={events} />
           {/* APARECER VIA MODAL/ANIMAÇÃO */}
           {showModal && (
-            <ModalEvent onClose={() => setShowModal(false)} event={event} />
+            <ModalEvent
+              onClose={() => setShowModal(false)}
+              event={event}
+              onToggle={getEvents}
+            />
           )}
         </div>
         <div

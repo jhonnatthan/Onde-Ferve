@@ -85,8 +85,11 @@ const CardEvent = props => {
 
   useEffect(() => {
     getEvent();
-    getPreview();
   }, []);
+
+  useEffect(() => {
+    getPreview();
+  }, [event]);
 
   return (
     <div

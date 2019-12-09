@@ -1,6 +1,4 @@
 import React, { useState, Fragment, useEffect } from "react";
-import imageFesta from "../assets/images/evento-bg.png";
-import imagemEvento from "../assets/images/evento-image.jpg";
 import api from "../services/api";
 
 const styles = {
@@ -15,9 +13,14 @@ const styles = {
   },
 
   headerArea: {
-    background: `transparent url(${imageFesta}) 0% 0% no-repeat padding-box`,
+    width: "100%",
     backgroundSize: "center",
-    height: "187px"
+    height: "250px"
+  },
+  headerImage: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover"
   },
   headerBtn: {
     background: "#F9F9F9",
@@ -106,6 +109,7 @@ const ModalEvent = props => {
 
       if (!data.error) {
         setConfimed(true);
+        if (props.onToggle) props.onToggle();
       } else {
         alert(data.message);
       }
@@ -124,6 +128,7 @@ const ModalEvent = props => {
 
       if (!data.error) {
         setConfimed(false);
+        if (props.onToggle) props.onToggle();
       } else {
         alert(data.message);
       }
@@ -157,6 +162,7 @@ const ModalEvent = props => {
         <Fragment>
           <div style={styles.headerAreaContainer}>
             <div style={styles.headerArea}>
+              <img src={event.banner} style={styles.headerImage} />
               <button
                 className="btn"
                 style={styles.headerBtn}

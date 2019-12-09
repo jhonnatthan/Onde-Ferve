@@ -9,3 +9,7 @@
 .event__profile:not(:first-child) {
   margin-left: -7px;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
