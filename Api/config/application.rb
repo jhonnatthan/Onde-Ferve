@@ -1,4 +1,4 @@
-require_relative 'boot'
+require_relative "boot"
 
 require "rails"
 # Pick the frameworks you want:
@@ -28,6 +28,24 @@ module Api
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    config.middleware.insert_before 0, Rack::Cors do
+      allowed_headers = %i(get post put patch delete options head)
+      allow do
+        origins "http://localhost:3000"
+        resource "*", headers: :any, methods: allowed_headers
+      end
+
+      allow do
+        origins "http://localhost:4000"
+        resource "*", headers: :any, methods: allowed_headers
+      end
+
+      allow do
+        origins "*"
+        resource "*", headers: :any, methods: allowed_headers
+      end
+    end
 
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
